@@ -1,5 +1,8 @@
-# Project-2
+## Project 2: Elevator Kernel Module
 
+## File Listing
+```
+.
 ├── part1
 │   ├── empty.c
 │   ├── empty.trace
@@ -19,3 +22,4 @@
 │   └── Makefile
 ├── README.md
 └── etc. (Documentation)
+```
