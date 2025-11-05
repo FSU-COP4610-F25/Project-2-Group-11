@@ -328,27 +328,12 @@ static int elevator_show(struct seq_file *m, void *v) {
     mutex_lock(&elevator.lock);
 
     switch (elevator.state) {
-        case OFFLINE:
-            state_str = "OFFLINE";
-            break;
-        case IDLE:
-            state_str = "IDLE";
-            break;
-        case LOADING:
-            state_str = "LOADING";
-            break;
-        case UP:
-            state_str = "UP";
-            break;
-        case DOWN:
-            state_str = "DOWN";
-            break;
-        case STOPPING:
-            state_str = "STOPPING";
-            break;
-        default:
-            state_str = "???";
-            break;
+        case OFFLINE: state_str = "OFFLINE"; break;
+        case IDLE:    state_str = "IDLE"; break;
+        case LOADING: state_str = "LOADING"; break;
+        case UP:      state_str = "UP"; break;
+        case DOWN:    state_str = "DOWN"; break;
+        default:      state_str = "???"; break;
     }
     
     seq_printf(m, "Elevator state: %s\n", state_str);
