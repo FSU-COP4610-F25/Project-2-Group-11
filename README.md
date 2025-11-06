@@ -25,7 +25,7 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 
 ### Part 3c: Threads
 - **Responsibilities**: Implement the main elevator logic within a kthread to control elevator movement and operation.
-- **Assigned to**: Jake Power
+- **Assigned to**: Jake Power, Amelia Castro
 
 ### Part 3d: Linked List
 - **Responsibilities**: Implement or adapt linked lists (linux/list.h) to manage pets waiting on floors and pets currently on the elevator.
@@ -64,12 +64,33 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 ```
 ## How to Compile
 ```
+cd part_1/src/
+make
+cd part_2/src/
+make
+cd part_3/src/
 make
 ```
 
 ## How to Run
 ```
-make run
+cd part_1/src/
+make verify
+
+cd part_2/src/
+sudo insmod my_timer.ko
+cat /proc/timer
+sleep 1
+cat /proc/timer
+sudo rmmod my_timer.ko
+
+cd part_3/src/
+sudo insmod elevator.ko
+./consumer --start
+watch -n 0.5 cat /proc/elevator
+./producer 20
+./consumer --stop
+sudo rmmod elevator.ko
 ```
 
 ## Development Log
@@ -83,8 +104,11 @@ make run
 
 ### [Amelia Castro]
 
-| Date       | Work Completed / Notes |
-|------------|------------------------|
+| Date       | Work Completed / Notes                                                             |
+|------------|------------------------------------------------------------------------------------|
+| 10-26-25   | Part 2: Timer Kernel Module                                                        |
+| 11-02-25   | Step 4: Implement Elevator                                                         |
+| 11-04-25   | Organized directories, implemented makefiles for Timer Kernel and Elevator         |
 
 
 
@@ -92,3 +116,13 @@ make run
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
+
+
+## Meetings
+Document online/in-person meetings, their purpose, and what was discussed.
+
+| Date       | Attendees            | Topics Discussed | Outcomes / Decisions |
+|------------|----------------------|------------------|-----------------------|
+| 2025-10-12 | [Amelia Castro, Jake Power, Ethan Sauve]              | [Project 2]   | [Determine the division of labor and responsabilities for the project.] |
+| 2025-10-22 | [Amelia Castro, Jake Power, Ethan Sauve]              | [Project 2]   | [Continue work on Project 2. Discuss about progress done. Helped each other out on some bugs]  |
+| 2025-10-27 - 2025-11-02 | [Amelia Castro, Jake Power, Ethan Sauve] | [Project 2]   | [On-going online communication about the progress of the project. Testing. Solving Bugs. Clarifying conceptual ideas of the project. Kept working on Project 2.]  |
