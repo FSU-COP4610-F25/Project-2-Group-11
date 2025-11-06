@@ -46,7 +46,8 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 │   ├── empty.c
 │   ├── empty.trace
 │   ├── part1.c
-│   └── part1.trace
+│   ├── part1.trace
+│   └── Makefile
 ├── part_2
 │   ├── src
 │   │   └── my_timer.c
@@ -54,9 +55,9 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 ├── part_3
 │   ├── src
 │   │   ├── elevator.c
-│   │   ├── elevator.h
-│   │   └── syscalls.c    
-│   └── Makefile
+│   │   └── elevator.h
+|   ├── Makefile   
+│   └── syscalls.c
 └── README.md
 ```
 
