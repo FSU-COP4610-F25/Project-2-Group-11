@@ -3,17 +3,17 @@
 all: part1 part2 part3 tests
 
 part1:
-	make -C part_1/src
+	$(MAKE) -C part_1/src
 
 part2:
-	make -C part_2/src
+	$(MAKE) -C part_2/src
 
 part3:
-	make -C part_3/src
+	$(MAKE) -C part_3/src
 
 tests:
-	make -C part_3/tests/system-calls-test
-	make -C part_3/tests/elevator-test
+	$(MAKE) -C part_3/tests/system-calls-test
+	$(MAKE) -C part_3/tests/elevator-test
 
 run:
 	@echo "--- Running all non-interactive parts (Part 1, Part 2, Syscall Test) ---"
@@ -32,17 +32,17 @@ run:
 	@echo "3. STOP ELEVATOR: After monitoring is complete, run 'make run_part3_stop'"
 
 verify: part1
-	make -C part_1/src verify
+	$(MAKE) -C part_1/src verify
 
 run_part2: part2
-	sudo insmod part_2/src/my_timer.ko
+	sudo insmod part_2/src/my_timer.ko || { echo "Failed to load my_timer.ko"; exit 1; }
 	cat /proc/timer
 	sleep 1
 	cat /proc/timer
 	-sudo rmmod my_timer 2>/dev/null || true
 
 run_part3_start: part3
-	sudo insmod part_3/src/elevator.ko
+	sudo insmod part_3/src/elevator.ko || { echo "Failed to load elevator.ko"; exit 1; }
 	part_3/src/consumer --start &
 	@echo "Run 'watch -n 0.5 cat /proc/elevator' in another terminal."
 
@@ -54,13 +54,23 @@ run_part3_stop:
 	-sudo rmmod elevator 2>/dev/null || true
 
 run_syscall_test: tests
-	sudo insmod part_3/tests/system-calls-test/syscheck.ko
-	make -C part_3/tests/system-calls-test run
+	sudo insmod part_3/tests/system-calls-test/syscheck.ko || { echo "Failed to load syscheck.ko"; exit 1; }
+	$(MAKE) -C part_3/tests/system-calls-test run
+	-sudo rmmod syscheck 2>/dev/null || true
+
+install: part2 part3 tests
+	sudo insmod part_2/src/my_timer.ko || true
+	sudo insmod part_3/src/elevator.ko || true
+	sudo insmod part_3/tests/system-calls-test/syscheck.ko || true
+
+remove:
+	-sudo rmmod elevator 2>/dev/null || true
+	-sudo rmmod my_timer 2>/dev/null || true
 	-sudo rmmod syscheck 2>/dev/null || true
 
 clean: 
-	make -C part_1/src clean
-	make -C part_2/src clean
-	make -C part_3/src clean
-	make -C part_3/tests/system-calls-test clean
-	make -C part_3/tests/elevator-test clean
+	$(MAKE) -C part_1/src clean
+	$(MAKE) -C part_2/src clean
+	$(MAKE) -C part_3/src clean
+	$(MAKE) -C part_3/tests/system-calls-test clean
+	$(MAKE) -C part_3/tests/elevator-test clean
