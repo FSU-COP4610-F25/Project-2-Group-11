@@ -75,26 +75,29 @@ make run
 ## Development Log
 ### [Ethan Sauve]
 
-| Date       | Work Completed / Notes                                                             |
-|------------|------------------------------------------------------------------------------------|
-| 10-28-25   | Part 1                                                                             |
-| 11-04-25   | README                                                                             |
-| 11-05-25   | Scheduling algorithm, README, part 1 makefile, and part 2/3 header files           |
+| Date       | Work Completed / Notes                                                                      |
+|------------|---------------------------------------------------------------------------------------------|
+| 10-28-25   | Part 1                                                                                      |
+| 11-04-25   | README                                                                                      |
+| 11-05-25   | Scheduling algorithm, README, part 1 makefile, and part 2/3 header files, overall makefile  |
 
 ### [Amelia Castro]
 
-| Date       | Work Completed / Notes                                                             |
-|------------|------------------------------------------------------------------------------------|
-| 10-26-25   | Part 2: Timer Kernel Module                                                        |
-| 11-02-25   | Step 4: Implement Elevator                                                         |
-| 11-04-25   | Organized directories, implemented makefiles for Timer Kernel and Elevator         |
+| Date       | Work Completed / Notes                                                                      |
+|------------|---------------------------------------------------------------------------------------------|
+| 10-26-25   | Part 2: Timer Kernel Module                                                                 |
+| 11-02-25   | Step 4: Implement Elevator                                                                  |
+| 11-04-25   | Organized directories, implemented makefiles for Timer Kernel and Elevator                  |
 
 
 
 ### [Jake Power]
 
-| Date       | Work Completed / Notes |
-|------------|------------------------|
+| Date       | Work Completed / Notes                                                                      |
+|------------|---------------------------------------------------------------------------------------------|
+|            |                                                                                             |
+|            |                                                                                             |
+|            |                                                                                             |
 
 
 ## Meetings
