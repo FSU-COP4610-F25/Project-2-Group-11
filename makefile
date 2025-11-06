@@ -25,7 +25,6 @@ run:
 	$(MAKE) run_syscall_test
 	@echo "--- Part 3: Elevator Simulation (Manual Steps Required) ---"
 	@echo "1. START ELEVATOR: Run 'make run_part3_start'"
-	@echo "   (This loads the module and starts the consumer. You must then open a new terminal to run 'watch -n 0.5 cat /proc/elevator')"
 	@echo " "
 	@echo "2. SEND REQUESTS: After the watch is running, run 'make run_part3_requests'"
 	@echo " "
