@@ -3,7 +3,7 @@
 all: part1 part2 part3 tests
 
 part1:
-	$(MAKE) -C part_1/src
+	$(MAKE) -C part_1
 
 part2:
 	$(MAKE) -C part_2/src
@@ -31,7 +31,7 @@ run:
 	@echo "3. STOP ELEVATOR: After monitoring is complete, run 'make run_part3_stop'"
 
 verify: part1
-	$(MAKE) -C part_1/src verify
+	$(MAKE) -C part_1 verify
 
 run_part2: part2
 	sudo insmod part_2/src/my_timer.ko || { echo "Failed to load my_timer.ko"; exit 1; }
@@ -68,7 +68,7 @@ remove:
 	-sudo rmmod syscheck 2>/dev/null || true
 
 clean: 
-	$(MAKE) -C part_1/src clean
+	$(MAKE) -C part_1 clean
 	$(MAKE) -C part_2/src clean
 	$(MAKE) -C part_3/src clean
 	$(MAKE) -C part_3/tests/system-calls-test clean
