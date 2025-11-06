@@ -64,33 +64,12 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 ```
 ## How to Compile
 ```
-cd part_1/src/
-make
-cd part_2/src/
-make
-cd part_3/src/
 make
 ```
 
 ## How to Run
 ```
-cd part_1/src/
-make verify
-
-cd part_2/src/
-sudo insmod my_timer.ko
-cat /proc/timer
-sleep 1
-cat /proc/timer
-sudo rmmod my_timer.ko
-
-cd part_3/src/
-sudo insmod elevator.ko
-./consumer --start
-watch -n 0.5 cat /proc/elevator
-./producer 20
-./consumer --stop
-sudo rmmod elevator.ko
+make run
 ```
 
 ## Development Log
