@@ -50,7 +50,8 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 │   └── Makefile
 ├── part_2
 │   ├── src
-│   │   └── my_timer.c
+│   │   ├── my_timer.c
+│   │   └── my_timer.h
 │   └── Makefile
 ├── part_3
 │   ├── src
@@ -58,19 +59,48 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 │   │   └── elevator.h
 |   ├── Makefile   
 │   └── syscalls.c
+|── Makefile
 └── README.md
+```
+## How to Compile
+```
+cd part_1/src/
+make
+cd part_2/src/
+make
+cd part_3/src/
+make
+```
+
+## How to Run
+```
+cd part_1/src/
+make verify
+
+cd part_2/src/
+sudo insmod my_timer.ko
+cat /proc/timer
+sleep 1
+cat /proc/timer
+sudo rmmod my_timer.ko
+
+cd part_3/src/
+sudo insmod elevator.ko
+./consumer --start
+watch -n 0.5 cat /proc/elevator
+./producer 20
+./consumer --stop
+sudo rmmod elevator.ko
 ```
 
 ## Development Log
 ### [Ethan Sauve]
 
-| Date       | Work Completed / Notes |
-|------------|------------------------|
-| 10-28-25   | Part 1                 |
-| 11-04-25   | README                 |
-| 11-05-25   | Scheduling algorithm,  |
-|            | README, and part 2/3   |
-|            | header files           |
+| Date       | Work Completed / Notes                                                             |
+|------------|------------------------------------------------------------------------------------|
+| 10-28-25   | Part 1                                                                             |
+| 11-04-25   | README                                                                             |
+| 11-05-25   | Scheduling algorithm, README, part 1 makefile, and part 2/3 header files           |
 
 ### [Amelia Castro]
 
@@ -84,10 +114,4 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 | Date       | Work Completed / Notes |
 |------------|------------------------|
 
-
-## Bugs
-- **Bug 1**: 
-
-
-## Considerations
-
+No Meetings
