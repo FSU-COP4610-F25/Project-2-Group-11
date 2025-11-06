@@ -6,10 +6,10 @@ part1:
 	$(MAKE) -C part_1
 
 part2:
-	$(MAKE) -C part_2/src
+	$(MAKE) -C part_2
 
 part3:
-	$(MAKE) -C part_3/src
+	$(MAKE) -C part_3
 
 tests:
 	$(MAKE) -C part_3/tests/system-calls-test
@@ -42,14 +42,14 @@ run_part2: part2
 
 run_part3_start: part3
 	sudo insmod part_3/src/elevator.ko || { echo "Failed to load elevator.ko"; exit 1; }
-	part_3/src/consumer --start &
+	part_3/tests/elevator-test/consumer --start &
 	@echo "Run 'watch -n 0.5 cat /proc/elevator' in another terminal."
 
 run_part3_requests:
-	part_3/src/producer 20
+	part_3/tests/elevator-test/producer 20
 
 run_part3_stop:
-	part_3/src/consumer --stop
+	part_3/tests/elevator-test/consumer --stop
 	-sudo rmmod elevator 2>/dev/null || true
 
 run_syscall_test: tests
@@ -69,7 +69,7 @@ remove:
 
 clean: 
 	$(MAKE) -C part_1 clean
-	$(MAKE) -C part_2/src clean
-	$(MAKE) -C part_3/src clean
+	$(MAKE) -C part_2 clean
+	$(MAKE) -C part_3 clean
 	$(MAKE) -C part_3/tests/system-calls-test clean
 	$(MAKE) -C part_3/tests/elevator-test clean
