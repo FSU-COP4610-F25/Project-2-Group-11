@@ -113,5 +113,3 @@ sudo rmmod elevator.ko
 
 | Date       | Work Completed / Notes |
 |------------|------------------------|
-
-No Meetings
