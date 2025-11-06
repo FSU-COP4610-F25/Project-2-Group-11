@@ -8,6 +8,8 @@
 #include <linux/errno.h>
 #include <linux/kernel.h>
 
+#include "my_timer.h"
+
 static int timer_show(struct seq_file *m, void *v);
 static int timer_open(struct inode *inode, struct file *file);
 
@@ -46,7 +48,7 @@ static int timer_open(struct inode *inode, struct file *file) {
     return single_open(file, timer_show, NULL);
 }
 
-static int __init timer_init(void) {
+int __init timer_init(void) {
     printk(KERN_INFO "timer: Loading module...\n");
     
 
@@ -58,7 +60,7 @@ static int __init timer_init(void) {
     return 0;
 }
 
-static void __exit timer_exit(void) {
+void __exit timer_exit(void) {
     printk(KERN_INFO "timer: Exiting module...\n");
 
     proc_remove("timer", NULL);
@@ -67,4 +69,3 @@ static void __exit timer_exit(void) {
 module_init(timer_init);
 module_exit(timer_exit);
 MODULE_LICENSE("GPL");
-
