@@ -67,9 +67,10 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 | Date       | Work Completed / Notes |
 |------------|------------------------|
 | 10-28-25   | Part 1                 |
-| 11-04-25   | Read Me                |
-| 11-05-25   | Scheduling Algorithm   |
-|            | and Read Me            |
+| 11-04-25   | README                 |
+| 11-05-25   | Scheduling algorithm,  |
+|            | README, and part 2/3   |
+|            | header files           |
 
 ### [Amelia Castro]
 
