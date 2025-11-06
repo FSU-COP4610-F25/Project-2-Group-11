@@ -13,6 +13,7 @@ part3:
 
 tests:
 	make -C part_3/tests/system-calls-test
+	make -C part_3/tests/elevator-test
 
 run:
 	@echo "--- Running all non-interactive parts (Part 1, Part 2, Syscall Test) ---"
@@ -22,7 +23,6 @@ run:
 	$(MAKE) run_part2
 	@echo "*** PART 3: System Call Test ***"
 	$(MAKE) run_syscall_test
-	@echo " "
 	@echo "--- Part 3: Elevator Simulation (Manual Steps Required) ---"
 	@echo "1. START ELEVATOR: Run 'make run_part3_start'"
 	@echo "   (This loads the module and starts the consumer. You must then open a new terminal to run 'watch -n 0.5 cat /proc/elevator')"
@@ -58,26 +58,9 @@ run_syscall_test: tests
 	make -C part_3/tests/system-calls-test run
 	-sudo rmmod syscheck 2>/dev/null || true
 
-clean_part1:
+clean: 
 	make -C part_1/src clean
-
-clean_part2:
 	make -C part_2/src clean
-
-clean_part3:
 	make -C part_3/src clean
-
-clean_tests:
 	make -C part_3/tests/system-calls-test clean
-
-clean: clean_part1 clean_part2 clean_part3 clean_tests
-
-install: part2 part3 tests
-	sudo insmod part_2/src/my_timer.ko || true
-	sudo insmod part_3/src/elevator.ko || true
-	sudo insmod part_3/tests/system-calls-test/syscheck.ko || true
-
-remove:
-	-sudo rmmod elevator 2>/dev/null || true
-	-sudo rmmod my_timer 2>/dev/null || true
-	-sudo rmmod syscheck 2>/dev/null || true
+	make -C part_3/tests/elevator-test clean
