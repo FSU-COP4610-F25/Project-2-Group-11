@@ -211,16 +211,15 @@ static int elevator_thread_func(void *data) {
 
             case STOPPING: {                
                 if (elevator_is_empty_of_requests()) {
-                    elevator.state = OFFLINE;
-                    elevator.direction = 0;
-                } else {
-                    elevator.state = determine_next_move_state();
-                    if (elevator.state == IDLE) { 
-                        elevator.state = OFFLINE;
+                    elevator.state = OFFLINE;
+                    elevator.direction = 0;
+                } else {
+                    elevator.state = determine_next_move_state();
+                    if (elevator.state == IDLE) { 
+                        elevator.state = OFFLINE;
                         elevator.direction = 0;
-                    }
-                }
-
+                    }
+                }
                 break;
             }
 
@@ -232,8 +231,8 @@ static int elevator_thread_func(void *data) {
                          elevator.state = LOADING;
                     }
                 }
-                break;
-            }
+                break;
+            }
 
             case LOADING: {
                 struct Pet *pet, *tmp;
@@ -287,7 +286,6 @@ static int elevator_thread_func(void *data) {
                         break;  
                     }
                 }
-                
                 elevator.state = determine_next_move_state();
                 break;
             }
@@ -425,7 +423,7 @@ static int __init elevator_init(void) {
     if (IS_ERR(elevator.thread)) {
         printk(KERN_ERR "Elevator: Failed to create kthread.\n");
         
-        proc_remove("elevator", NULL); 
+        proc_remove(elevator_proc_entry); 
         return PTR_ERR(elevator.thread);
     }
 
