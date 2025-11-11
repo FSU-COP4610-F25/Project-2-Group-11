@@ -251,7 +251,6 @@ static int elevator_thread_func(void *data) {
                         elevator.pets_on_board--;
                         elevator.current_weight -= pet->weight;
                         elevator.pets_serviced++;
-                        elevator.pets_waiting--; 
                         list_del(&pet->list);
                         kfree(pet);
                     }
@@ -283,6 +282,7 @@ static int elevator_thread_func(void *data) {
                             list_add_tail(&pet->list, &elevator.elevator_pets);
                             elevator.pets_on_board++;
                             elevator.current_weight += pet->weight;
+                            elevator.pets_waiting--;
                         } else {
                             break; 
                         }
@@ -290,7 +290,19 @@ static int elevator_thread_func(void *data) {
                         break;  
                     }
                 }
-                elevator.state = determine_next_move_state();
+
+                if (!elevator_is_empty_of_requests()) {
+                    if (elevator.direction == 1 && elevator.current_floor < NUM_FLOORS) {
+                        elevator.state = UP;
+                    } else if (elevator.direction == -1 && elevator.current_floor > 1) {
+                        elevator.state = DOWN;
+                    } else {
+                        elevator.state = determine_next_move_state();
+                    }
+                } else {
+                    elevator.state = IDLE;
+                }
+
                 break;
             }
 
