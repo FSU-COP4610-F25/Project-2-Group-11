@@ -388,7 +388,7 @@ static int elevator_show(struct seq_file *m, void *v) {
     }
 
     seq_printf(m, "Number of pets: %d\n", elevator.pets_on_board);
-    seq_printf(m, "Number of pets waiting: %d\n", elevator.pets_waiting - elevator.pets_on_board);
+    seq_printf(m, "Number of pets waiting: %d\n", elevator.pets_waiting);
     seq_printf(m, "Number of pets serviced: %d\n", elevator.pets_serviced);
 
     mutex_unlock(&elevator.lock);
