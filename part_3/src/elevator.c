@@ -16,7 +16,13 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Group 11");
 MODULE_DESCRIPTION("Elevator Kernel Module");
 
+extern int (*elevator_start_ptr)(void);
+extern int (*elevator_issue_ptr)(int, int, int);
+extern int (*elevator_stop_ptr)(void);
+
 struct Elevator elevator;
+
+static struct proc_dir_entry *elevator_proc_entry;
 
 static bool has_onboard_destination_at_floor(int floor) {
     struct Pet *pet;
@@ -387,6 +393,9 @@ static const struct proc_ops elevator_proc_ops = {
 
 static int __init elevator_init(void) {
     int i;
+    elevator_start_ptr = start_elevator;
+    elevator_issue_ptr = issue_request;
+    elevator_stop_ptr = stop_elevator;
 
     printk(KERN_INFO "Elevator: Loading the module.\n");
     elevator.state = OFFLINE;
@@ -405,7 +414,9 @@ static int __init elevator_init(void) {
         INIT_LIST_HEAD(&elevator.floor_pets[i]);
     }
 
-    if (proc_create("elevator", 0, NULL, &elevator_proc_ops) == NULL) {
+    elevator_proc_entry = proc_create("elevator", 0, NULL, &elevator_proc_ops);
+
+    if (!elevator_proc_entry) {
         printk(KERN_ERR "Elevator: Failed to create /proc/elevator.\n");
         return -ENOMEM;
     }
@@ -447,9 +458,16 @@ static void __exit elevator_exit(void) {
         kfree(pet);
     }
 
+
     mutex_unlock(&elevator.lock);
+
+    if (elevator_proc_entry) {
+        proc_remove(elevator_proc_entry);
+    }
     
-    proc_remove("elevator", NULL);
+    elevator_start_ptr = NULL;
+    elevator_issue_ptr = NULL;
+    elevator_stop_ptr = NULL;
 }
 
 module_init(elevator_init);
