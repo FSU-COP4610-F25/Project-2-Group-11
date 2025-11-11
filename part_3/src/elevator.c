@@ -36,6 +36,18 @@ static bool has_onboard_destination_at_floor(int floor) {
     return found;
 }
 
+static inline void clamp_floor_and_fix_dir(void)
+{
+    if (elevator.current_floor < 1) {
+        elevator.current_floor = 1;
+        elevator.direction = 1;
+    } else if (elevator.current_floor > NUM_FLOORS) {
+        elevator.current_floor = NUM_FLOORS;
+        elevator.direction = -1;
+    }
+}
+
+
 static bool elevator_is_empty_of_requests(void) {
     int i;
     if (!list_empty(&elevator.elevator_pets)) return false;
@@ -48,33 +60,24 @@ static bool elevator_is_empty_of_requests(void) {
 
 static enum elevator_state determine_next_move_state(void) {
     int i;
-    int current_idx = elevator.current_floor - 1;
+    clamp_floor_and_fix_dir();
+    
+    if (elevator.direction == 0) elevator.direction = 1;
+
+    if (elevator.current_floor == 1 && elevator.direction < 0)
+        elevator.direction = 1;
+    if (elevator.current_floor == NUM_FLOORS && elevator.direction > 0)
+        elevator.direction = -1;
 
     if (elevator.direction == 1) {
-        for (i = current_idx; i < NUM_FLOORS; i++) {
-            if (has_onboard_destination_at_floor(i + 1) || !list_empty(&elevator.floor_pets[i])) {
-                return UP;
-            }
-        }
-    } else if (elevator.direction == -1) {
-        for (i = current_idx; i >= 0; i--) {
-            if (has_onboard_destination_at_floor(i + 1) || !list_empty(&elevator.floor_pets[i])) {
-                return DOWN;
-            }
-        }
-    }
-
-    elevator.direction *= -1;
-
-    if (elevator.direction == 1) {
-        for (i = 0; i < NUM_FLOORS; i++) {
-             if (has_onboard_destination_at_floor(i + 1) || !list_empty(&elevator.floor_pets[i])) {
+        for (i = elevator.current_floor - 1; i < NUM_FLOORS; i++) {
+            if (has_onboard_destination_at_floor(i+1) || !list_empty(&elevator.floor_pets[i])) {
                 return (i + 1 == elevator.current_floor) ? LOADING : UP;
-             }
+            }
         }
-    } else if (elevator.direction == -1) {
-        for (i = NUM_FLOORS - 1; i >= 0; i--) {
-            if (has_onboard_destination_at_floor(i + 1) || !list_empty(&elevator.floor_pets[i])) {
+    } else {
+        for (i = elevator.current_floor - 1; i >=0; i--) {
+            if (has_onboard_destination_at_floor(i+1) || !list_empty(&elevator.floor_pets[i])) {
                 return (i + 1 == elevator.current_floor) ? LOADING : DOWN;
             }
         }
@@ -236,6 +239,7 @@ static int elevator_thread_func(void *data) {
 
             case LOADING: {
                 struct Pet *pet, *tmp;
+                clamp_floor_and_fix_dir();
                 int current_floor_index = elevator.current_floor - 1;
 
                 mutex_unlock(&elevator.lock);
@@ -299,7 +303,8 @@ static int elevator_thread_func(void *data) {
                 mutex_lock(&elevator.lock);
 
                 elevator.current_floor += travel_direction;
-                
+                clamp_floor_and_fix_dir();
+
                 elevator.state = LOADING; 
                 break;
             }
@@ -402,7 +407,7 @@ static int __init elevator_init(void) {
     elevator.pets_on_board = 0;
     elevator.pets_serviced = 0;
     elevator.pets_waiting = 0;
-    elevator.direction = 1;
+    elevator.direction = 0;
 
     mutex_init(&elevator.lock);
 
