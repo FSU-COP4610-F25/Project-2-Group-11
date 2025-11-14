@@ -50,8 +50,7 @@ Elevator kernel module that requires modifying the Linux kernel to add custom sy
 │   └── Makefile
 ├── part_2
 │   ├── src
-│   │   ├── my_timer.c
-│   │   └── my_timer.h
+│   │   └── my_timer.c
 │   └── Makefile
 ├── part_3
 │   ├── src
@@ -69,7 +68,7 @@ make
 
 ## How to Run
 ```
-make run
+sudo make run
 ```
 
 ## Development Log
