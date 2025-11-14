@@ -8,10 +8,11 @@
 #include <linux/errno.h>
 #include <linux/kernel.h>
 
-#include "my_timer.h"
-
 static int timer_show(struct seq_file *m, void *v);
 static int timer_open(struct inode *inode, struct file *file);
+
+static int __init timer_init(void);
+static void __exit timer_exit(void);
 
 static struct timespec64 last_time;
 static bool is_first_read = true;
@@ -51,12 +52,11 @@ static int timer_open(struct inode *inode, struct file *file) {
 
 static int __init timer_init(void) {
     printk(KERN_INFO "timer: Loading module...\n");
-    
 
     timer_entry = proc_create("timer", 0, NULL, &timer_fops);
     if (!timer_entry) {
-        printk(KERN_ALERT "timer: Failed to create /proc/timer\n");
-        return -ENOMEM;
+	    printk(KERN_ALERT "timer: Failed to create /proc/timer\n");
+	    return -ENOMEM;
     }
 
     return 0;
