@@ -53,7 +53,8 @@ static int __init timer_init(void) {
     printk(KERN_INFO "timer: Loading module...\n");
     
 
-    if (proc_create("timer", 0, NULL, &timer_fops) == NULL) {
+    timer_entry = proc_create("timer", 0, NULL, &timer_fops);
+    if (!timer_entry) {
         printk(KERN_ALERT "timer: Failed to create /proc/timer\n");
         return -ENOMEM;
     }
