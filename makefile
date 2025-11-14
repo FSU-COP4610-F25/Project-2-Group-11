@@ -1,4 +1,4 @@
-.PHONY: all part1 part2 part3 tests clean clean_part1 clean_part2 clean_part3 clean_tests install remove verify run run_part2 run_part3_start run_part3_requests run_part3_stop run_syscall_test
+.PHONY: all part1 part2 part3 tests clean verify run run_part2 run_part3_start run_part3_requests run_part3_stop run_syscall_test
 
 all: part1 part2 part3 tests
 
@@ -34,14 +34,14 @@ verify: part1
 	$(MAKE) -C part_1 verify
 
 run_part2: part2
-	sudo insmod part_2/src/my_timer.ko || { echo "Failed to load my_timer.ko"; exit 1; }
+	sudo insmod part_2/my_timer.ko || { echo "Failed to load my_timer.ko"; exit 1; }
 	cat /proc/timer
 	sleep 1
 	cat /proc/timer
 	-sudo rmmod my_timer 2>/dev/null || true
 
 run_part3_start: part3
-	sudo insmod part_3/src/elevator.ko || { echo "Failed to load elevator.ko"; exit 1; }
+	sudo insmod part_3/elevator.ko || { echo "Failed to load elevator.ko"; exit 1; }
 	part_3/tests/elevator-test/consumer --start &
 	@echo "Run 'watch -n 0.5 cat /proc/elevator' in another terminal."
 
@@ -55,16 +55,6 @@ run_part3_stop:
 run_syscall_test: tests
 	sudo insmod part_3/tests/system-calls-test/syscheck.ko || { echo "Failed to load syscheck.ko"; exit 1; }
 	$(MAKE) -C part_3/tests/system-calls-test run
-	-sudo rmmod syscheck 2>/dev/null || true
-
-install: part2 part3 tests
-	sudo insmod part_2/src/my_timer.ko || true
-	sudo insmod part_3/src/elevator.ko || true
-	sudo insmod part_3/tests/system-calls-test/syscheck.ko || true
-
-remove:
-	-sudo rmmod elevator 2>/dev/null || true
-	-sudo rmmod my_timer 2>/dev/null || true
 	-sudo rmmod syscheck 2>/dev/null || true
 
 clean: 
