@@ -16,6 +16,7 @@ static int timer_open(struct inode *inode, struct file *file);
 static struct timespec64 last_time;
 static bool is_first_read = true;
 
+static struct proc_dir_entry *timer_entry;
 
 static const struct proc_ops timer_fops = {
     .proc_open = timer_open,
@@ -48,7 +49,7 @@ static int timer_open(struct inode *inode, struct file *file) {
     return single_open(file, timer_show, NULL);
 }
 
-int __init timer_init(void) {
+static int __init timer_init(void) {
     printk(KERN_INFO "timer: Loading module...\n");
     
 
@@ -60,12 +61,13 @@ int __init timer_init(void) {
     return 0;
 }
 
-void __exit timer_exit(void) {
+static void __exit timer_exit(void) {
     printk(KERN_INFO "timer: Exiting module...\n");
 
-    proc_remove("timer", NULL);
+    proc_remove(timer_entry);
 }
 
 module_init(timer_init);
 module_exit(timer_exit);
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Simple proc timer module for measuring elapsed time");
